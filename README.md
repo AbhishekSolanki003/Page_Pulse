@@ -1,110 +1,210 @@
-# Page Pulse
+# 🚀 Page Pulse
 
-Page Pulse is a production-oriented web application that audits any public website URL and returns a compact SEO and page-quality report. The backend is built with Java 21 and Spring Boot 3.x, and the frontend is built with React and Vite.
+Page Pulse is a full-stack web application that analyzes any public website URL and generates a concise SEO and page-quality report. It audits a webpage by measuring response time, extracting metadata, and calculating key page metrics through a clean and responsive user interface.
 
-## Features
+---
 
-- Validates URLs before any request is made.
-- Fetches remote pages with Java `HttpClient` and measures response time.
-- Rejects non-HTML responses.
-- Parses HTML with Jsoup.
-- Returns page title, meta description, H1 count, missing alt image count, and approximate visible word count.
-- Handles invalid URL, timeout, DNS, SSL, redirect, non-HTML, 404, 500, and malformed payload scenarios with JSON error responses.
-- Responsive dashboard UI with loading, error, results, dark mode, copy JSON, download JSON, and audit history.
+## 🌐 Live Demo
 
-## Technology Stack
+**Frontend:**  
+https://page-pulse-gilt.vercel.app/
 
-### Backend
+**Backend API:**  
+https://page-pulse-backend-production-331c.up.railway.app
+
+---
+
+## ✨ Features
+
+- Analyze any public HTTP/HTTPS website URL
+- Validate URLs before making requests
+- Measure HTTP response time
+- Fetch pages using Java HttpClient
+- Parse HTML using Jsoup
+- Extract:
+  - HTTP Status Code
+  - Response Time
+  - Page Title
+  - Meta Description
+  - H1 Heading Count
+  - Images Missing Alt Attributes
+  - Approximate Visible Word Count
+- Responsive React dashboard
+- Audit history using Local Storage
+- Copy JSON response
+- Download audit report as JSON
+- Dark mode interface
+- Consistent JSON error responses
+
+---
+
+# 🛠 Tech Stack
+
+## Backend
 
 - Java 21
 - Spring Boot 3.x
 - Maven
 - Spring Web
 - Jsoup
+- Java HttpClient
+- Lombok
 - JUnit 5
 - Mockito
-- Lombok
 
-### Frontend
+## Frontend
 
 - React 18
 - Vite
 - Axios
 - CSS
 
-## Architecture
+## Deployment
 
-The backend follows a Controller -> Service -> Utility structure:
+- Railway (Backend)
+- Vercel (Frontend)
 
-- Controller: receives the request and delegates work.
-- Service: performs fetch, timing, error handling, and response assembly.
-- Utility: parses HTML and extracts metrics.
-- Validation: ensures only safe `http` and `https` URLs are accepted.
-- Exception handling: `@RestControllerAdvice` converts failures into JSON error responses.
+---
 
-The frontend is a single-page dashboard that calls the backend API and renders the resulting report cards.
-
-## Folder Structure
+# 📁 Project Structure
 
 ```text
-backend/
-  src/main/java/com/digitalheroes/pagepulse/
-    controller/
-    config/
-    dto/
-    exception/
-    service/
-    service/impl/
-    util/
-    validation/
-  src/main/resources/
-  src/test/java/
-
-frontend/
-  src/
-    components/
-    pages/
-    services/
+Page_Pulse/
+│
+├── backend/
+│   ├── src/
+│   │   ├── main/
+│   │   └── test/
+│   ├── pom.xml
+│   └── Dockerfile
+│
+├── frontend/
+│   ├── src/
+│   ├── public/
+│   ├── package.json
+│   └── vite.config.js
+│
+└── README.md
 ```
 
-## Setup Instructions
+---
 
-### Backend
+# 🏗 Architecture
 
-1. Open a terminal in `backend`.
-2. Run `mvn clean test` to build and test.
-3. Run `mvn spring-boot:run` to start the API.
+The backend follows a layered architecture.
 
-The backend listens on `http://localhost:8080` by default.
+```
+Controller
+      │
+      ▼
+Service
+      │
+      ▼
+HTML Parser Utility
+      │
+      ▼
+Audit Response
+```
 
-### Frontend
+### Components
 
-1. Open a terminal in `frontend`.
-2. Install dependencies with `npm install`.
-3. Run `npm run dev` to start the Vite app.
+- **Controller** – Receives HTTP requests and returns API responses.
+- **Service** – Handles business logic, page fetching, timing, and report generation.
+- **Utility** – Parses HTML using Jsoup and extracts page metrics.
+- **Validation** – Accepts only valid public HTTP/HTTPS URLs.
+- **Global Exception Handler** – Returns consistent JSON error responses.
 
-Set `VITE_API_BASE_URL` if the frontend should call a deployed backend instead of localhost.
+The frontend is a React single-page application that communicates with the backend REST API and displays audit reports.
 
-## How to Run Backend
+---
+
+# 🚀 Getting Started
+
+## Clone the Repository
+
+```bash
+git clone https://github.com/AbhishekSolanki003/Page_Pulse.git
+
+cd Page_Pulse
+```
+
+---
+
+# Backend Setup
+
+Go to the backend directory:
 
 ```bash
 cd backend
-mvn spring-boot:run
 ```
 
-## How to Run Frontend
+Run the application:
+
+### Linux / macOS
+
+```bash
+./mvnw spring-boot:run
+```
+
+### Windows
+
+```bash
+mvnw.cmd spring-boot:run
+```
+
+The backend runs on:
+
+```
+http://localhost:8080
+```
+
+---
+
+# Frontend Setup
+
+Open another terminal.
 
 ```bash
 cd frontend
+
 npm install
+
 npm run dev
 ```
 
-## API Contract
+The frontend runs on:
 
-### POST `/api/audit`
+```
+http://localhost:5173
+```
 
-#### Request
+---
+
+# Environment Variables
+
+## Frontend
+
+Create a `.env` file inside the `frontend` folder.
+
+For local development:
+
+```text
+VITE_API_BASE_URL=http://localhost:8080
+```
+
+For production:
+
+```text
+VITE_API_BASE_URL=https://page-pulse-backend-production-331c.up.railway.app
+```
+
+---
+
+# API Documentation
+
+## POST `/api/audit`
+
+### Request
 
 ```json
 {
@@ -112,7 +212,9 @@ npm run dev
 }
 ```
 
-#### Success Response
+---
+
+### Success Response
 
 ```json
 {
@@ -126,11 +228,13 @@ npm run dev
 }
 ```
 
-#### Error Response
+---
+
+### Error Response
 
 ```json
 {
-  "timestamp": "2026-07-24T12:00:00Z",
+  "timestamp": "2026-07-25T12:00:00Z",
   "status": 400,
   "error": "Bad Request",
   "message": "Invalid URL",
@@ -138,73 +242,116 @@ npm run dev
 }
 ```
 
-## Testing Instructions
+---
 
-### Backend
+# Testing
+
+## Backend
+
+Run:
 
 ```bash
 cd backend
-mvn test
+
+./mvnw test
 ```
 
-The backend tests cover:
+or (Windows)
 
-- Happy path
-- Invalid URL
-- Missing meta description
-- No H1
-- No images
-- Images with alt
-- Images without alt
-- Non HTML content
-- Timeout
-- Word count
-- Parsing utility
-- Service layer
+```bash
+mvnw.cmd test
+```
 
-### Frontend
+### Test Coverage
 
-There are no automated frontend tests in this submission, but the UI is structured so that component and integration tests can be added easily with Vitest and React Testing Library.
+- URL Validation
+- Service Layer
+- HTML Parser Utility
+- Missing Meta Description
+- Missing H1 Tags
+- Missing Image Alt Attributes
+- Word Count Calculation
+- Timeout Handling
+- Invalid URLs
+- Non-HTML Responses
 
-## Deployment Instructions
+---
 
-### Render Backend
+# Deployment
 
-The repository includes `backend/render.yaml`.
+## Backend
 
-Suggested Render settings:
+**Platform:** Railway
 
-- Root directory: `backend`
-- Build command: `mvn clean package -DskipTests`
-- Start command: `java -jar target/page-pulse-backend-1.0.0.jar`
+Live URL
 
-### Vercel Frontend
+```
+https://page-pulse-backend-production-331c.up.railway.app
+```
 
-The repository includes `frontend/vercel.json`.
+---
 
-Suggested Vercel settings:
+## Frontend
 
-- Root directory: `frontend`
-- Build command: `npm run build`
-- Output directory: `dist`
-- Environment variable: `VITE_API_BASE_URL=<your Render backend URL>`
+**Platform:** Vercel
 
-## Design Decisions
+Live URL
 
-1. The backend uses `HttpClient` instead of a third-party HTTP library so the audit flow stays lightweight and aligns with the assignment requirements.
-2. HTML parsing is isolated in `HtmlParserUtil` so the service remains focused on orchestration, error handling, and response building.
-3. The frontend keeps audit history in `localStorage` instead of using a database, which satisfies the no-database constraint while still improving usability.
+```
+https://page-pulse-gilt.vercel.app
+```
 
-## Future Improvements
+---
 
-- Add frontend tests with Vitest and React Testing Library.
-- Add request rate limiting to protect the public API.
-- Add support for additional SEO signals such as canonical URL, robots meta, and Open Graph tags.
-- Add PDF export for reports.
-- Add a results compare view for audit history.
+# Design Decisions
 
-## Notes
+- Used Java HttpClient instead of third-party HTTP libraries to keep the application lightweight.
+- Isolated HTML parsing inside a utility class to separate concerns.
+- Used Spring Boot layered architecture for better maintainability.
+- Stored audit history in Local Storage instead of using a database to satisfy the assignment constraints.
+- Implemented centralized exception handling using `@RestControllerAdvice`.
+- Used Axios for clean API communication between frontend and backend.
 
-- The backend allows only public `http` and `https` URLs.
-- `localhost`, `file://`, `ftp://`, and `javascript:` URLs are rejected.
-- No database or authentication is used.
+---
+
+# Future Improvements
+
+- Add authentication
+- Add PDF report export
+- Add CSV export
+- Add Lighthouse integration
+- Add Open Graph and Twitter Card analysis
+- Add Canonical URL detection
+- Add Robots Meta analysis
+- Add Performance Score
+- Add Accessibility Score
+- Add Frontend unit tests using Vitest
+
+---
+
+# Notes
+
+- Only public HTTP and HTTPS URLs are accepted.
+- Localhost URLs are rejected.
+- FTP, File, and JavaScript URLs are rejected.
+- No database is used.
+- No authentication is required.
+- Audit history is stored in the browser using Local Storage.
+
+---
+
+# Author
+
+**Abhishek Solanki**
+
+GitHub:  
+https://github.com/AbhishekSolanki003/
+
+LinkedIn:  
+[YOUR_LINKEDIN_PROFILE](https://www.linkedin.com/in/abhishek-solanki-024253315/)
+
+---
+
+## Assignment
+
+This project was developed as part of the **Digital Heroes SDE Internship Qualification Task**.
