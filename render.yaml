@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: page-pulse-backend
+    env: java
+    rootDir: backend
+    buildCommand: mvn clean package -DskipTests
+    startCommand: java -jar target/page-pulse-backend-1.0.0.jar
+    envVars:
+      - key: JAVA_VERSION
+        value: 21
