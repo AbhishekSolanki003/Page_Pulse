@@ -1,10 +1,6 @@
 services:
   - type: web
     name: page-pulse-backend
-    env: java
+    runtime: docker
     rootDir: backend
-    buildCommand: ./mvnw clean package -DskipTests
-    startCommand: java -jar target/page-pulse-backend-1.0.0.jar
-    envVars:
-      - key: JAVA_VERSION
-        value: 21
+    dockerfilePath: Dockerfile
